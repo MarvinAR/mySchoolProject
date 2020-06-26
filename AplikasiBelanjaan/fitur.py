@@ -4,6 +4,7 @@ from getpass import getpass
 from datetime import datetime
 from os import system
 import random
+import string
 
 fileData = 'data.json'
 fileUser = 'user.json'
@@ -69,9 +70,14 @@ def print_menu():
 	print("2. Lihat barang belanjaan")
 	print("3. Hapus barang belanjaan")
 	print("4. Info aplikasi")
+	'''
+	print("5. Lihat berdasarkan ID")
+	print("6. Lihat berdasarkan Nama")
+	'''	
 	print("Q. Keluar\n")
 
 def tambah():
+
 
 	system("cls")
 	data_sementara = {}
@@ -84,9 +90,24 @@ def tambah():
 		nama_barang = input('\nMasukkan nama barang belanjaan   : ')
 		harga = input('Masukkan harga barang belanjaan  : ')
 		kuantitas = input('Masukkan jumlah barang belanjaan : ')
+
+		alphabet = string.ascii_uppercase
+		alpha_numeric = string.digits
+		A = random.choice(alphabet)
+		B = random.choice(alpha_numeric)
+		C = random.choice(alphabet)
+		D = random.choice(alpha_numeric)
+		E = random.choice(alphabet)
+		F = random.choice(alpha_numeric)
+
+		ID = f"{A}{B}{C}{D}{E}{F}"
+		ex_date = int(bulan) + 2
+
 		data_sementara[nama_barang] = {
 			"harga" : harga,
-			"kuantitas" : kuantitas
+			"kuantitas" : kuantitas,
+			"ID" : ID,
+			"ex_date" : ex_date
 		}
 	data[date] = data_sementara
 	
@@ -115,17 +136,9 @@ def lihat():
 				barang = info
 				harga =  data[date][info]["harga"]
 				jumlah = data[date][info]["kuantitas"]
-				ex_date = int(bulan) + 2
+				ID = data[date][info]["ID"]
+				ex_date = data[date][info]["ex_date"]
 
-				list_ID = [barang[0], barang[1], barang[2], barang[3], date[0], date[1], date[2], date[3], date[4], date[5]]
-				A = random.choice(list_ID)
-				B = random.choice(list_ID)
-				C = random.choice(list_ID)
-				D = random.choice(list_ID)
-				E = random.choice(list_ID)
-				F = random.choice(list_ID)
-
-				ID = f"{A}{B}{C}{D}{E}{F}"
 
 
 				if ex_date > 12:
@@ -172,3 +185,40 @@ def about():
 	print("Dibuat oleh Marvin AR dengan bimbingan dari Sir Anas")
 	print("Dibuat dari tanggal 23 Juni 2020")
 	print("Dalam membuat aplikasi ini, saya menggunakan aplikasi Sublime Text")
+'''
+def lihat_berdasar_ID():
+
+	system("cls")
+	if len(data) > 0:
+
+		ID =  input("Masukkan ID barang : ")
+
+		if ID in data:
+			for info in data[ID]:
+				break
+				
+		else:
+			print(f"Tidak ada barang yang memiliki ID {ID}")
+
+	else:
+		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
+
+def lihat_berdasar_nama():
+
+	system("cls")
+	if len(data) > 0:
+
+		nama = input("Masukkan nama barang : ")
+
+		if nama in data:
+			for info in data[nama]:
+				break
+
+		else:
+			print(f"Tidak ada barang yang memiliki nama {nama}")
+	else:
+		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
+'''
+
+
+
