@@ -31,12 +31,14 @@ if statusLoading :
 			elif menuchoice == '4':
 				fitur.about()
 				input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
+				'''
 			elif menuchoice == '5':
 				fitur.lihat_berdasar_ID()
 				input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
 			elif menuchoice == '6':
 				fitur.lihat_berdasar_nama()
 				input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
+				'''			
 			elif menuchoice.lower() == 'q':
 				system("cls")
 				print("Terima kasih telah menggunakan aplikasi ini")
