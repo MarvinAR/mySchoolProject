@@ -15,6 +15,7 @@ user = {}
 def loadData():
 
 	global data, user
+
 	with open(fileData) as f:
 		data = load(f)
 	with open(fileUser) as f:
@@ -23,7 +24,9 @@ def loadData():
 	return True
 
 def saveData():
+
 	global data, user
+
 	with open (fileData,"w") as f:
 		dump(data,f)
 	with open (fileUser,"w") as f:
@@ -32,29 +35,35 @@ def saveData():
 	return True
 
 def login():
+
 	print("Aplikasi Daftar Belanjaan\n")
 	counter = 1
 	Username = input('Masukkan Username : ')
 	Password = getpass('Masukkan Password : ')
 	dataCheck = False
 	passLogin = False  
+
 	if Username in user:
 		dataCheck = True
 		passLogin = (user[Username] == Password)
 	else:
+
 		dataCheck = False
 		passLogin = False
 
 	while not dataCheck or not passLogin:
+
 		counter += 1
 		if counter > 3:
 			return False
 		print('\nKombinasi Username dan Password salah\n')
 		Username = input('Masukkan Username : ')
 		Password = getpass('Masukkan Password : ')
+
 		if Username in user:
 			dataCheck = True
 			passLogin = (user[Username] == Password)
+
 		else:
 			dataCheck = False
 			passLogin = False 
@@ -73,11 +82,10 @@ def print_menu():
 	'''
 	print("5. Lihat berdasarkan ID")
 	print("6. Lihat berdasarkan Nama")
-	'''	
+	'''
 	print("Q. Keluar\n")
 
 def tambah():
-
 
 	system("cls")
 	data_sementara = {}
@@ -110,10 +118,18 @@ def tambah():
 			"ex_date" : ex_date
 		}
 	data[date] = data_sementara
+
+	pilihan = input(f"\nApakah anda yakin ingin menambahkan barang di atas pada tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
 	
-	saveData()
-	sleep(1)
-	print('Data Saved.')
+	if pilihan.upper() == 'Y':
+		saveData()
+		sleep(1)
+		print('Data Saved.')
+	elif pilihan.upper() == 'N':
+		sleep(1)
+		print("Penambahan barang dibatalkan")
+	else:
+		print("Masukkan pilihan dengan benar")
 
 def lihat():
 
@@ -139,24 +155,20 @@ def lihat():
 				ID = data[date][info]["ID"]
 				ex_date = data[date][info]["ex_date"]
 
-
-
 				if ex_date > 12:
 					bulan_ex = int(bulan) - 12
 					tahun_ex = tahun + 1
 					print("=========================================================================================")
-					print(f"| {no} | {barang}\t\t| {harga}\t\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun_ex}\t| {ID}\t|")
+					print(f"| {no}  | {barang}\t\t| {harga}\t\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun_ex}\t| {ID}\t|")
 					no += 1
 					saveData()
 				else:
 					bulan_ex = int(bulan) + 2
 					print("=========================================================================================")
-					print(f"| {no} | {barang}\t\t| {harga}\t\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun}\t| {ID}\t|")
+					print(f"| {no}  | {barang}\t\t| {harga}\t\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun}\t| {ID}\t|")
 					no += 1
 					saveData()
 			print("=========================================================================================")
-
-		input("ENTER untuk kembali ke menu utama ")
 			
 	else:
 		print("Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
@@ -168,12 +180,21 @@ def remove():
 	bulan = input("Masukkan bulan   : ")
 	tahun = input("Masukkan tahun   : ")
 	date = str(tahun) + str(bulan) + str(hari)
-
 	if date in data:
-		del data[date]
-		saveData()
-		sleep(1)
-		print("Data Removed")
+
+		pilihan = input(f"\nApakah anda yakin ingin menghapus barang di tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
+
+		if pilihan.upper() == 'Y':
+			del data[date]
+			saveData()
+			sleep(1)
+			print("Data Removed")
+
+		elif pilihan.upper() == 'N':
+			sleep(1)
+			print("Penghapusan barang dibatalkan")
+		else:
+			print("Masukkan pilihan dengan benar ")
 	else:
 		print(f"Anda belum mendaftarkan barang belanjaan anda di tanggal {hari} - {bulan} - {tahun}")
 
@@ -184,21 +205,21 @@ def about():
 	print("Tugas Project membuat aplikasi ")
 	print("Dibuat oleh Marvin AR dengan bimbingan dari Sir Anas")
 	print("Dibuat dari tanggal 23 Juni 2020")
-	print("Dalam membuat aplikasi ini, saya menggunakan aplikasi Sublime Text")
+	print("Dalam membuat aplikasi ini, saya menggunakan aplikasi Sublime Text 3")
 '''
 def lihat_berdasar_ID():
 
 	system("cls")
 	if len(data) > 0:
 
-		ID =  input("Masukkan ID barang : ")
+		ID =  input("Masukkan ID barang yang ingin dicari : ")
 
 		if ID in data:
 			for info in data[ID]:
 				break
 				
 		else:
-			print(f"Tidak ada barang yang memiliki ID {ID}")
+			print(f"Tidak ada barang yang memiliki ID {ID} di aplikasi ini")
 
 	else:
 		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
@@ -208,17 +229,14 @@ def lihat_berdasar_nama():
 	system("cls")
 	if len(data) > 0:
 
-		nama = input("Masukkan nama barang : ")
+		nama = input("Masukkan nama barang yang ingin dicari : ")
 
 		if nama in data:
 			for info in data[nama]:
 				break
 
 		else:
-			print(f"Tidak ada barang yang memiliki nama {nama}")
+			print(f"Tidak ada barang yang memiliki nama {nama} di aplikasi")
 	else:
 		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
 '''
-
-
-
