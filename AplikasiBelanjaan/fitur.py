@@ -119,17 +119,22 @@ def tambah():
 		}
 	data[date] = data_sementara
 
-	pilihan = input(f"\nApakah anda yakin ingin menambahkan barang di atas pada tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
-	
-	if pilihan.upper() == 'Y':
-		saveData()
-		sleep(1)
-		print('Data Saved.')
-	elif pilihan.upper() == 'N':
-		sleep(1)
-		print("Penambahan barang dibatalkan")
-	else:
-		print("Masukkan pilihan dengan benar")
+	counter = 0
+	while counter != 1:
+		pilihan = input(f"\nApakah anda yakin ingin menambahkan barang di atas pada tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
+		if pilihan.upper() == 'Y':
+			saveData()
+			sleep(1)
+			print('Data Saved.')
+			counter += 1
+		elif pilihan.upper() == 'N':
+			sleep(1)
+			print("Penambahan barang dibatalkan")
+			counter += 1
+		else:
+			print("Masukkan pilihan dengan benar")
+			sleep(1.5)
+			system('cls')
 
 def lihat():
 
@@ -169,6 +174,8 @@ def lihat():
 					no += 1
 					saveData()
 			print("=========================================================================================")
+		else:
+			print(f"Anda belum mendaftarkan barang belanjaan anda di tanggal {hari} - {bulan} - {tahun}")
 			
 	else:
 		print("Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
@@ -181,20 +188,24 @@ def remove():
 	tahun = input("Masukkan tahun   : ")
 	date = str(tahun) + str(bulan) + str(hari)
 	if date in data:
-
-		pilihan = input(f"\nApakah anda yakin ingin menghapus barang di tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
-
-		if pilihan.upper() == 'Y':
-			del data[date]
-			saveData()
-			sleep(1)
-			print("Data Removed")
-
-		elif pilihan.upper() == 'N':
-			sleep(1)
-			print("Penghapusan barang dibatalkan")
-		else:
-			print("Masukkan pilihan dengan benar ")
+		counter = 0
+		pilihan = ""
+		while counter != 1:
+			pilihan = input(f"\nApakah anda yakin ingin menghapus barang di tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
+			if pilihan.upper() == 'Y':
+				del data[date]
+				saveData()
+				sleep(1)
+				print("Data Removed")
+				counter += 1
+			elif pilihan.upper() == 'N':
+				sleep(1)
+				print("Penghapusan barang dibatalkan")
+				counter += 1
+			else:
+				print("Masukkan pilihan dengan benar ")
+				sleep(1.5)
+				system('cls')
 	else:
 		print(f"Anda belum mendaftarkan barang belanjaan anda di tanggal {hari} - {bulan} - {tahun}")
 
