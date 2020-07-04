@@ -64,9 +64,15 @@ if statusLoading :
 				elif menuchoice == '3':
 					fitur.total()
 					input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
+				elif menuchoice.lower() == 'q':
+					system("cls")
+					print("Terima kasih telah menggunakan aplikasi ini")
+					sleep(2)
+					system("cls")
+					break
 				else :
 					print("Masukkan pilihan dengan benar")
-					input('\nKlik tombol [ ENTER ] untuk kembali ke menu :)')
+					input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
 				
 	else:
 		print("\nGagal untuk Log In")
