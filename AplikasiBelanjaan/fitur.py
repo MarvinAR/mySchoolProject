@@ -8,35 +8,31 @@ import string
 
 fileData = 'data.json'
 fileUser = 'user.json'
-fileAdmin = 'admin.json'
 
 data = {}
 user = {}
-admin = {}
 
 def loadData():
 
-	global data, user, admin
+	global data, user
 
 	with open(fileData) as f:
 		data = load(f)
+
 	with open(fileUser) as f:
 		user = load(f)
-	with open(fileAdmin) as f:
-		admin = load(f)
 
 	return True
 
 def saveData():
 
-	global data, user, admin
+	global data, user
 
 	with open (fileData,"w") as f:
 		dump(data,f)
+
 	with open (fileUser,"w") as f:
 		dump(user,f)
-	with open (fileAdmin,"w") as f:
-		dump(admin,f)
 
 	return True
 
@@ -44,15 +40,18 @@ def login():
 
 	system('cls')
 	print("Aplikasi Daftar Belanjaan\n")
+
 	counter = 1
+
 	Username = input('Masukkan Username : ')
 	Password = getpass('Masukkan Password : ')
+
 	dataCheck = False
 	passLogin = False  
 
 	if Username in user:
 		dataCheck = True
-		passLogin = (user[Username] == Password)
+		passLogin = (user[Username][0] == Password)
 	
 	else:
 		dataCheck = False
@@ -62,7 +61,8 @@ def login():
 
 		counter += 1
 		if counter > 3:
-			return False
+			break
+			#return False
 		
 		print('\nKombinasi Username dan Password salah\n')
 		Username = input('Masukkan Username : ')
@@ -70,74 +70,35 @@ def login():
 
 		if Username in user:
 			dataCheck = True
-			passLogin = (user[Username] == Password)
+			passLogin = (user[Username][0] == Password)
 
 		else:
 			dataCheck = False
 			passLogin = False 
 		
 	else:
+		level = user[Username][1]
 		print('Login Pass !')
-		return True
+		return True, level
 
-def loginAdmin():
 
-	system('cls')
-	print("Aplikasi Daftar Belanjaan\n")
-	counter = 1
-	Username = input('Masukkan Username sebagai admin : ') 
-	Password = getpass('Masukkan Password sebagai admin : ')
-	dataCheck = False
-	passLogin = False  
-
-	if Username in admin:
-		dataCheck = True
-		passLogin = (admin[Username] == Password)
-	
-	else:
-		dataCheck = False
-		passLogin = False
-
-	while not dataCheck or not passLogin:
-		counter += 1
-		
-		if counter > 3:
-			return False
-
-		print('\nKombinasi Username dan Password salah\n')
-		Username = input('Masukkan Username sebagai admin : ')
-		Password = getpass('Masukkan Password sebagai admin : ')
-
-		if Username in admin:
-			dataCheck = True
-			passLogin = (admin[Username] == Password)
-		
-		else:
-			dataCheck = False
-			passLogin = False 
-	else:
-		print('Login Pass !')
-		return True
 
 def print_menu():
 
-	print('Selamat datang \n')
+	print('Selamat datang User\n')
 	print("1. Tambahkan barang belanjaan")
 	print("2. Lihat barang belanjaan")
 	print("3. Hapus barang belanjaan")
 	print("4. Info aplikasi")
-	'''
-	print("5. Lihat berdasarkan ID")
-	print("6. Lihat berdasarkan Nama")
-	'''
 	print("Q. Keluar\n")
 
 def menu_admin():
 	
-	print("Selamat Datang \n")
+	print("Selamat Datang Admin\n")
 	print("1. Melihat User dan password")
 	print("2. Menghitung diskon")
-	print("3. Lihat total")
+	print("3. Lihat total daftar belanjaan")
+	print("4. Lihat tanggal daftar belanjaan")
 	print("Q. Keluar\n")
 
 def tambah():
@@ -201,6 +162,7 @@ def lihat():
 	system("cls")
 	
 	if len(data) > 0:
+
 		hari =  input("Masukkan tanggal : ")
 		bulan = input("Masukkan bulan   : ")
 		tahun = input("Masukkan tahun   : ")
@@ -215,6 +177,7 @@ def lihat():
 			print("| No | Nama Barang\t| Harga\t\t| Jumlah\t| Ex.Date\t| ID \t\t| Diskon \t\t\t\t|")
 			
 			for info in data[date]:
+
 				barang = info
 				harga =  data[date][info]["harga"]
 				jumlah = data[date][info]["kuantitas"]
@@ -225,7 +188,7 @@ def lihat():
 					bulan_ex = int(bulan) - 12
 					tahun_ex = tahun + 1
 					print("====================================================================================================================================")
-					print(f"| {no}  | {barang}\t\t| Rp {harga},-\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun_ex}\t| {ID}\t| Hanya dapat ditampilkan di mode admin\t|")
+					print(f"| {no}  | {barang}\t\t| Rp {harga},-\t| {jumlah}\t\t| {hari} - {bulan_ex} - {tahun_ex}\t\t| {ID}\t| Hanya dapat ditampilkan di mode admin\t|")
 					no += 1
 					saveData()
 				
@@ -257,6 +220,7 @@ def remove():
 		pilihan = ""
 		
 		while counter != 1:
+
 			pilihan = input(f"\nApakah anda yakin ingin menghapus barang di tanggal {hari} - {bulan} - {tahun} (Y/N) : ")
 			
 			if pilihan.upper() == 'Y':
@@ -300,25 +264,33 @@ def total():
 		system('cls')
 		
 		if date in data:
+
 			print(f"Total harga barang barang di tanggal {hari} - {bulan} - {tahun} : \n")
 			
+			grand_total_barang = 0
+
 			for info in data[date]:
+
 				barang = info
 				harga =  data[date][info]["harga"]
 				jumlah = data[date][info]["kuantitas"]
 				A = int(harga) * int(jumlah)
+				grand_total_barang += A
 				print(f"{barang} : Rp {harga},- ( {jumlah} buah ) : Rp {A},-")
+
+			print(f"\nTotal keseluruhan belanja pada tanggal {hari} - {bulan} - {tahun} : Rp {grand_total_barang},-")
 
 def lihat_user():
 
 	system('cls')
 	print("Nama - nama user beserta passwordnya : \n")
 	print("| No | Nama User \t| Password \t|")
+
 	no = 1
 	
 	for info in user:
 		nama_user = info
-		password  = user[info]
+		password  = user[info][0]
 		print("=========================================")
 		print(f"| {no}  | {nama_user}\t\t| {password}\t\t| ")
 		no += 1
@@ -330,6 +302,7 @@ def diskon():
 	system("cls")
 
 	if len(data) > 0:
+
 		hari =  input("Masukkan tanggal : ")
 		bulan = input("Masukkan bulan   : ")
 		tahun = input("Masukkan tahun   : ")
@@ -337,6 +310,7 @@ def diskon():
 
 		
 		if date in data:
+
 			#Template header
 			system("cls")
 			no = 1
@@ -344,6 +318,7 @@ def diskon():
 			print("| No | Nama Barang\t| Harga\t\t| Jumlah\t|")
 			
 			for info in data[date]:
+
 				barang = info
 				harga =  data[date][info]["harga"]
 				jumlah = data[date][info]["kuantitas"]
@@ -390,39 +365,22 @@ def diskon():
 	else:
 		print("Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
 
-				
+def lihat_tanggal():
 
-'''
-def lihat_berdasar_ID():
+	system('cls')
 
-	system("cls")
+	no = 1
+
 	if len(data) > 0:
 
-		ID =  input("Masukkan ID barang yang ingin dicari : ")
+		print("Daftar Tanggal Yang Terdapat Daftar Belanjaan\n")
+		print("| No | Tanggal \t|")
 
-		if ID in data:
-			for info in data[ID]:
-				break
-				
-		else:
-			print(f"Tidak ada barang yang memiliki ID {ID} di aplikasi ini")
+		for info in data:
 
-	else:
-		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
+			print("=================")
+			tanggal = info
+			print(f"| {no}  | {info} \t|")
+			no += 1
 
-def lihat_berdasar_nama():
-
-	system("cls")
-	if len(data) > 0:
-
-		nama = input("Masukkan nama barang yang ingin dicari : ")
-
-		if nama in data:
-			for info in data[nama]:
-				break
-
-		else:
-			print(f"Tidak ada barang yang memiliki nama {nama} di aplikasi")
-	else:
-		print(f"Anda belum mendaftarkan barang belanjaan anda di aplikasi ini")
-'''
+		print("=================")
