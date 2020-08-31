@@ -61,7 +61,7 @@ def login():
 
 		counter += 1
 		if counter > 3:
-			return False
+			return False, 0
 		
 		print('\nKombinasi Username dan Password salah\n')
 		Username = input('Masukkan Username : ')

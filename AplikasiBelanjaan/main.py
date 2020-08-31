@@ -107,7 +107,7 @@ if statusLoading :
 
 				
 	else:
-		print("\nGagal untuk Log In")
+		print("\nGagal untuk melakukan login")
 
 else:
 	print("Aplikasi tidak bisa berjalan")
