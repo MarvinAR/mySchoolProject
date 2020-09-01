@@ -1,6 +1,7 @@
 from json import load, dump
 from os import system
 import fitur
+import buatPDF
 from time import sleep
 
 statusLoading = fitur.loadData()
@@ -48,6 +49,11 @@ if statusLoading :
 				elif menuchoice == '4':
 
 					fitur.about()
+					input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
+
+				elif menuchoice == '5':
+
+					buatPDF.buat()
 					input('\nKlik tombol [ ENTER ] untuk kembali ke menu ')
 
 				elif menuchoice.lower() == 'q':

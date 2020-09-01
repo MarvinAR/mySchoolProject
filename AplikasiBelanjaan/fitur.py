@@ -5,6 +5,7 @@ from datetime import datetime
 from os import system
 import random
 import string
+from reportlab.pdfgen import canvas
 
 fileData = 'data.json'
 fileUser = 'user.json'
@@ -383,3 +384,19 @@ def lihat_tanggal():
 			no += 1
 
 		print("=================")
+
+def print_pdf():
+
+	print("Print struk belanjaan sebagai PDF")
+
+	hari =  input("Masukkan tanggal : ")
+	bulan = input("Masukkan bulan   : ")
+	tahun = input("Masukkan tahun   : ")
+
+	date = str(tahun) + str(bulan) + str(hari)
+	
+	if date in data:
+		pass
+
+	else:
+		print(f"Tidak terdapat tanggal {date} di data sistem")
